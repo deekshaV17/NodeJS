@@ -17,7 +17,7 @@ const baseRoutes = require('./Controllers/Routes/base.routes'),
 /* config settings */
 
 const key = require('./key'),
-  db = key.db.remote || 'mongodb://localhost/' + 'key,db.local',
+  db = key.db.remote || 'mongodb://localhost/' + key.db.local,
   port = process.env.PORT || 8080;
   
 /* connecting to mongoose */
@@ -45,7 +45,7 @@ app.use('/auth/facebook', fbRoutes);
 app.use('/article', articleRoutes);
 app.use('/user', userRoutes);
 
-app.listenerCount(port, (err) => {
+app.listen(port, (err) => {
   if (!err) {
     console.log('Listening to port: ', port);
   } else {
