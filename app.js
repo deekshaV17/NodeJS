@@ -1,36 +1,54 @@
-const express = require('express');
-const app = express();
-const mongodb = require('mongodb');
-const mongoose = require('mongoose');
-const port = process.env.port || 8080;
-const myDB = 'mongodb://localhost/nodejs';
-const User = ('./Models/users/model.js');
-const UserRoutes = require('./Controllers/userroutes');
-const bodyParser = require('body-parser');
-const ejs = require('ejs');
+ const express = require('express'),
+  mongoose = require('mongoose'),
+  bodyParser = require('body-parser'),
+  session = require('express-session'),
+  ejs = require('ejs'),
+  passport = require('passport'),
+  app = express();
+
+/* Route files */
+
+const baseRoutes = require('./Controllers/Routes/base.routes'),
+  userRoutes = require('./Controllers/Routes/user.routes'),
+  localRoutes = require('./Controllers/Routes/local.routes'),
+  articleRoutes = require('./Controllers/Routes/articles.routes'),
+  fbRoutes = require('./Controllers/Routes/fb.route');
+
+/* config settings */
+
+const key = require('./key'),
+  db = key.db.remote || 'mongodb://localhost/' + 'key,db.local',
+  port = process.env.PORT || 8080;
+  
+/* connecting to mongoose */
+
+mongoose.connect(db);
+
+
+/* setting up app */
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
-  extended: true
+  extended: true,
 }));
-
-app.set('view engine', 'ejs');
+app.use(session({ secret: key.session.secret }));
+app.use(passport.initialize());
+app.use(passport.session());
 app.use(express.static('public'));
+app.set('view engine', 'ejs');
 
-mongoose.connect(myDB);
-app.use('/user', UserRoutes);
+/* Routes */
 
-app.get('/', (req, res) => {
-  let user = {
-    name: 'joe',
-  }
-  res.render('index',{ user: user });
-});
+app.use('/', baseRoutes);
+app.use('/auth/local', localRoutes);
+app.use('/auth/facebook', fbRoutes);
+app.use('/post', postRoutes);
+app.use('/user', userRoutes);
 
-app.listen(port, (err) => {
+app.listenerCount(port, (err) => {
   if (!err) {
-    console.log('listening to port ', port);
+    console.log('Listening to port: ', port);
   } else {
-    console.log('Error connecting to port ', port);
+    console.log('Cannot connect to port: ', port);
   }
 });
