@@ -11,7 +11,7 @@
 const baseRoutes = require('./Controllers/Routes/base.routes'),
   userRoutes = require('./Controllers/Routes/user.routes'),
   localRoutes = require('./Controllers/Routes/local.routes'),
-  articleRoutes = require('./Controllers/Routes/articles.routes'),
+  articleRoutes = require('./Controllers/Routes/article.routes'),
   fbRoutes = require('./Controllers/Routes/fb.route');
 
 /* config settings */
