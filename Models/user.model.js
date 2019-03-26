@@ -7,7 +7,7 @@ let UserSchema = new Schema({
   facebookId: String,
   password: String,
   profile_pic: String,
-  people_you_are_following: [String],
+  following: [String],
   followers: [String],
   username: {
     type: String,

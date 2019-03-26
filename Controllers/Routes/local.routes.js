@@ -32,7 +32,7 @@ Router.post('/signup', (req, res) => {
       newUser.password = bcrypt.hashSync(req.body.password, salt);
       newUser.profile_pic = req.body.profile_pic;
       newUser.followers.push(req.body.username);
-      newUser.people_you_are_following.push(req.body.username);
+      newUser.following.push(req.body.username);
       newUser.save((error, user) => {
         if (error) {
           console.log('error saving new user', error);
