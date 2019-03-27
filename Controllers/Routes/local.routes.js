@@ -2,12 +2,13 @@ const Router = require('express').Router(),
   User = require('../../Models/user.model'),
   bcrypt = require('bcryptjs'),
   salt = bcrypt.genSaltSync(10),
-  nodemailer = require('nodemailer');
+  nodemailer = require('nodemailer'),
+  key = require('../../key');
 
   var client = nodemailer.createTransport({
     service: 'SendGrid',
     auth: {
-      user: keyof.sendGrid.username,
+      user: key.sendGrid.username,
       pass: key.sendGrid.password,
     },
   });
